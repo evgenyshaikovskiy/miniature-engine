@@ -20,39 +20,48 @@ class ViewComponent(MDScreen):
         self.start_engine_button = MDFlatButton(
             text='Start Engine',
             size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.stop_engine_button = MDFlatButton(
             text='Stop Engine',
             size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.run_idle_button = MDFlatButton(
             text='Run Idle',
-            size_hint=default_size_hint
+            size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.free_wheel_button = MDFlatButton(
             text='Free Wheel',
-            size_hint=default_size_hint
+            size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.brake_by_button = MDFlatButton(
             text='Brake by',
-            size_hint=default_size_hint
+            size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.accelerate_by_button = MDFlatButton(
             text='Accelerate by',
-            size_hint=default_size_hint
+            size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.refuel_car_button = MDFlatButton(
             text='Refuel Car',
-            size_hint=default_size_hint
+            size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.get_information_button = MDFlatButton(
             text='Get Information',
-            size_hint=default_size_hint
+            size_hint=default_size_hint,
+            on_press=self.on_button_press,
         )
         self.exit_button = MDFillRoundFlatButton(
             text='Exit',
             size_hint=(1, 0.1),
-            md_bg_color=colors['Red']['A700']
+            md_bg_color=colors['Red']['A700'],
+            on_press=self.on_button_press,
         )
         
         self.stack_layout.add_widget(self.start_engine_button)
@@ -68,9 +77,11 @@ class ViewComponent(MDScreen):
         self.screen.add_widget(self.stack_layout)
 
         
-
     def build(self):
         return self.screen
+    
+    def on_button_press(self, button):
+        print(button.text)
 
     def on_controller_change(self, data):
         print(data)
