@@ -1,16 +1,16 @@
 import click
-import asyncio
+
 
 from abstractions.vehicle import AbstractVehicle
-from utility.logger import Logger
 from models.car import Car
+from utility.logger import Logger
 from utility.restore import RestoreService
 from utility.snapshot import SnapshotService
-
+from console import run_cli_interface
+from gui import run_gui_interface
 
 Logger.setup()
-snapshot_service: SnapshotService = SnapshotService()
-restore_service: RestoreService = RestoreService()
+
 
 
 # setup CLI
@@ -30,77 +30,25 @@ restore_service: RestoreService = RestoreService()
     default=False,
     help="Set this parameter as 'True' to disable file logging, otherwise 'False'."
 )
-def main(use_save, disable_console, disable_file):
-    # setup logger parameters
+@click.option(
+    '--interface-type',
+    default='GUI',
+    type=click.Choice(['GUI', 'CLI'], case_sensitive=False),
+    help="Sets type of interface that application will use. Possible parameters are GUI and CLI."
+)
+def main(use_save, disable_console, disable_file, interface_type):
+    # setup logger and services
     logger = Logger(disable_console, disable_file)
-
-    if use_save:
-        asyncio.run(run_car(restore_service.restore_car(logger), logger))
+    snapshot_service: SnapshotService = SnapshotService()
+    restore_service: RestoreService = RestoreService()
+    
+    if interface_type.lower() == 'gui':
+        run_gui_interface(use_save, logger, snapshot_service, restore_service)
     else:
-        asyncio.run(run_car(None, logger))
-
-
-async def run_car(car: AbstractVehicle, logger):
-    if car is None:
-        car = Car(logger)
-    else:
-        car = restore_service.restore_car(logger)
-
-    # start tracking new or already created car
-    car.subscribe(snapshot_service)
-
-    try:
-        while (True):
-            print('''Choose action:
-                  1 - Start Engine.
-                  2 - Stop Engine.
-                  3 - Run Idle.
-                  4 - Free Wheel.
-                  5 - Brake by certain speed.
-                  6 - Accelerate by certain speed.
-                  7 - Refuel Car.
-                  8 - Get information about car condition.
-                  9 - To exit simulation.
-                  ''')
-            action: int = int(input())
-
-            if action == 1:
-                car.engine_start()
-                await asyncio.sleep(0.5)
-            elif action == 2:
-                car.engine_stop()
-                await asyncio.sleep(0.5)
-            elif action == 3:
-                car.running_idle()
-                await asyncio.sleep(0.5)
-            elif action == 4:
-                car.free_wheel()
-                await asyncio.sleep(0.5)
-                print('Input count of km/h to brake by')
-            elif action == 5:
-                speed = float(input())
-                car.brake_by(speed)
-                await asyncio.sleep(0.5)
-            elif action == 6:
-                print('Input count of km/h to accelerate by')
-                speed = float(input())
-                car.accelerate(speed)
-                await asyncio.sleep(0.5)
-            elif action == 7:
-                print('Input amount of liters to refuel')
-                liters = float(input())
-                car.refuel(liters)
-                await asyncio.sleep(0.5)
-            elif action == 8:
-                car.get_report_on_car()
-                await asyncio.sleep(0.5)
-            elif action == 9:
-                print('Stopping simulation...')
-                car.unsubscribe(snapshot_service)
-                break
-    except Exception:
-        print('Exception occurred.')
-
+        if use_save:
+            run_cli_interface(restore_service.restore_car(logger), logger, restore_service, snapshot_service)
+        else:
+            run_cli_interface(None, logger, restore_service, snapshot_service)
 
 if __name__ == '__main__':
     main()
