@@ -1,5 +1,8 @@
 {
     "python.linting.pycodestyleEnabled": true,
     "python.linting.enabled": true,
-    "python.linting.pycodestyleCategorySeverity.E": "Information"
+    "python.linting.pycodestyleCategorySeverity.E": "Information",
+    "cSpell.words": [
+        "halign"
+    ]
 }
