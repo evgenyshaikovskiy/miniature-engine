@@ -9,6 +9,8 @@ from kivymd.uix.button import MDFillRoundFlatButton
 from kivymd.uix.stacklayout import MDStackLayout
 from kivymd.uix.label import MDLabel
 
+from view.popup import PopupWindow
+
 
 class ViewComponent(MDScreen):
     controller = ObjectProperty()
@@ -83,43 +85,44 @@ class ViewComponent(MDScreen):
     def build(self):
         return self.screen
 
+    def update_label(self):
+        self.car_label.text = self.controller.update_car_information()
+
     def on_button_press(self, button):
         button_text = button.text
+
+        popup_title = None
+        window_type = None
 
         match button_text:
             case 'Exit':
                 print('exit')
-                self.car_label.text = 'Exit'
                 # actions on simulation exit => close application
                 pass
             case 'Refuel Car':
-                print('refuel')
-                # pop up window => input fuel amount
-                # actions on refueling car => update car info label
-                pass
+                popup_title = 'Input amount of liters to refuel car.'
+                window_type = 'refuel-window'
             case 'Accelerate by':
-                print('accelerate by')
-                # pop up window => input km/h
-                # actions on speed => update car info label
-                pass
+                popup_title = 'Input amount of km/h to accelerate by.'
+                window_type = 'accelerate-window'
             case 'Brake by':
-                print('brake by')
-                # pop up window => input km/h
-                # actions on braking => update car info label
-                pass
+                popup_title = 'Input amount of km/h to brake by.'
+                window_type = 'brake-window'
             case 'Free Wheel':
-                print('free wheel')
+                # just updates label
                 pass
             case 'Run Idle':
+                # just updates label
                 print('run idle')
                 pass
             case 'Stop Engine':
+                # updates label
                 print('stop engine')
-                # stop engine
                 pass
             case 'Start Engine':
+                # updates label
                 print('start engine')
                 pass
 
-    def on_controller_change(self, data):
-        print(data)
+        if window_type and popup_title:
+            self.controller.open_dialog(popup_title, window_type)
