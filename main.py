@@ -3,7 +3,6 @@ import os
 
 os.environ["KIVY_NO_ARGS"] = "1"
 
-
 from models.car import Car
 from utility.logger import Logger
 from utility.restore import RestoreService
