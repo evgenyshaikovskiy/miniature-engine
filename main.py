@@ -51,4 +51,4 @@ def main(use_save, disable_console, disable_file, interface_type):
             run_cli_interface(None, logger, restore_service, snapshot_service)
 
 if __name__ == '__main__':
-    main
+    main()
