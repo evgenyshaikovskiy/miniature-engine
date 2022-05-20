@@ -1,21 +1,7 @@
 from abstractions.vehicle import AbstractVehicle
-from models.car import Car
 
 
-def run_cli_interface(
-    car: AbstractVehicle,
-    logger,
-    restore_service,
-    snapshot_service
-):
-    if car is None:
-        car = Car(logger)
-    else:
-        car = restore_service.restore_car(logger)
-
-    # start tracking new or already created car
-    car.subscribe(snapshot_service)
-
+def run_cli_interface(car: AbstractVehicle):
     try:
         while (True):
             print('''Choose action:
@@ -54,7 +40,6 @@ def run_cli_interface(
                 car.get_report_on_car()
             elif action == 9:
                 print('Stopping simulation...')
-                car.unsubscribe(snapshot_service)
                 break
     except Exception:
         print('Exception occurred.')

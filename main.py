@@ -1,13 +1,16 @@
 import click
+import os
+
+os.environ["KIVY_NO_ARGS"] = "1"
 
 
-from abstractions.vehicle import AbstractVehicle
 from models.car import Car
 from utility.logger import Logger
 from utility.restore import RestoreService
 from utility.snapshot import SnapshotService
 from console import run_cli_interface
 from gui import run_gui_interface
+
 
 Logger.setup()
 
@@ -37,23 +40,25 @@ Logger.setup()
 )
 def main(use_save, disable_console, disable_file, interface_type):
     # setup logger and services
+    print(interface_type)
     logger = Logger(disable_console, disable_file)
     snapshot_service: SnapshotService = SnapshotService()
     restore_service: RestoreService = RestoreService()
 
-    if interface_type.lower() == 'gui':
-        run_gui_interface(use_save, logger, snapshot_service, restore_service)
+    if use_save:
+        car = restore_service.restore_car(logger)
+        if car is None:
+            car = Car(logger)
     else:
-        if use_save:
-            run_cli_interface(
-                restore_service.restore_car(logger),
-                logger,
-                restore_service,
-                snapshot_service
-            )
+        car = Car(logger)
 
-        else:
-            run_cli_interface(None, logger, restore_service, snapshot_service)
+    # start tracking new or already created car
+    car.subscribe(snapshot_service)
+
+    if interface_type.lower() == 'gui':
+        run_gui_interface(car)
+    else:
+        run_cli_interface(car)
 
 
 if __name__ == '__main__':

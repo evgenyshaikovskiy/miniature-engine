@@ -1,19 +1,20 @@
 from kivymd.app import MDApp
 
 from kivy.core.window import Window
+from abstractions.vehicle import AbstractVehicle
 
 from controller.controller import ControllerComponent
 from model.model import ModelComponent
 
 
-def run_gui_interface(use_save, logger, snapshot_service, restore_service):
-    CarGraphicApplication().run()
+def run_gui_interface(car: AbstractVehicle):
+    CarGraphicApplication(car).run()
 
 
 class CarGraphicApplication(MDApp):
-    def __init__(self, **kw):
+    def __init__(self, car, **kw):
         super().__init__(**kw)
-        self.model = ModelComponent()
+        self.model = ModelComponent(car)
         self.controller = ControllerComponent(self.model)
 
         self.theme_cls.theme_style = 'Dark'
