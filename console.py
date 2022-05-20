@@ -1,6 +1,13 @@
 from abstractions.vehicle import AbstractVehicle
+from models.car import Car
 
-def run_cli_interface(car: AbstractVehicle, logger, restore_service, snapshot_service):
+
+def run_cli_interface(
+    car: AbstractVehicle,
+    logger,
+    restore_service,
+    snapshot_service
+):
     if car is None:
         car = Car(logger)
     else:

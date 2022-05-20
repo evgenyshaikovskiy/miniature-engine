@@ -63,7 +63,7 @@ class ViewComponent(MDScreen):
             md_bg_color=colors['Red']['A700'],
             on_press=self.on_button_press,
         )
-        
+
         self.stack_layout.add_widget(self.start_engine_button)
         self.stack_layout.add_widget(self.stop_engine_button)
         self.stack_layout.add_widget(self.run_idle_button)
@@ -73,15 +73,14 @@ class ViewComponent(MDScreen):
         self.stack_layout.add_widget(self.refuel_car_button)
         self.stack_layout.add_widget(self.get_information_button)
         self.stack_layout.add_widget(self.exit_button)
-        
+
         self.screen.add_widget(self.stack_layout)
 
-        
     def build(self):
         return self.screen
-    
+
     def on_button_press(self, button):
-        print(button.text)
+        button_text = button.text
 
     def on_controller_change(self, data):
         print(data)

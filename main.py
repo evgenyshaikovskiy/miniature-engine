@@ -12,7 +12,6 @@ from gui import run_gui_interface
 Logger.setup()
 
 
-
 # setup CLI
 @click.command()
 @click.option(
@@ -41,14 +40,21 @@ def main(use_save, disable_console, disable_file, interface_type):
     logger = Logger(disable_console, disable_file)
     snapshot_service: SnapshotService = SnapshotService()
     restore_service: RestoreService = RestoreService()
-    
+
     if interface_type.lower() == 'gui':
         run_gui_interface(use_save, logger, snapshot_service, restore_service)
     else:
         if use_save:
-            run_cli_interface(restore_service.restore_car(logger), logger, restore_service, snapshot_service)
+            run_cli_interface(
+                restore_service.restore_car(logger),
+                logger,
+                restore_service,
+                snapshot_service
+            )
+
         else:
             run_cli_interface(None, logger, restore_service, snapshot_service)
+
 
 if __name__ == '__main__':
     main()
