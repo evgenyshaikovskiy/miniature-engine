@@ -13,15 +13,16 @@ from abstractions.engine import AbstractEngine
 
 
 class DrivingProcessor(AbstractDrivingProcessor):
-    def __init__(self,
-                 engine: AbstractEngine,
-                 logger: AbstractLogger,
-                 acceleration_ratio=config.get('acceleration_ratio'),
-                 max_acceleration_ratio=config.get('max_acceleration_ratio'),
-                 min_acceleration_ratio=config.get('min_acceleration_ratio'),
-                 max_speed=config.get('max_speed'),
-                 braking_speed=config.get('braking_speed'),
-                 ):
+    def __init__(
+        self,
+        engine: AbstractEngine,
+        logger: AbstractLogger,
+        acceleration_ratio=config.get('acceleration_ratio'),
+        max_acceleration_ratio=config.get('max_acceleration_ratio'),
+        min_acceleration_ratio=config.get('min_acceleration_ratio'),
+        max_speed=config.get('max_speed'),
+        braking_speed=config.get('braking_speed'),
+    ):
 
         if max_speed < config.get('min_speed') or max_speed > config.get('max_speed'):
             raise MaxSpeedException(max_speed)

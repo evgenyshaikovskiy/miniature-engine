@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-# Abstact class that describes vehicles
+# Abstract class that describes vehicles
 class AbstractVehicle(ABC):
 
     @property
