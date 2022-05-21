@@ -7,14 +7,14 @@ from controller.controller import ControllerComponent
 from model.model import ModelComponent
 
 
-def run_gui_interface(car: AbstractVehicle):
-    CarGraphicApplication(car).run()
+def run_gui_interface(car: AbstractVehicle, logger):
+    CarGraphicApplication(car, logger).run()
 
 
 class CarGraphicApplication(MDApp):
-    def __init__(self, car, **kw):
+    def __init__(self, car, logger, **kw):
         super().__init__(**kw)
-        self.model = ModelComponent(car)
+        self.model = ModelComponent(car, logger)
         self.controller = ControllerComponent(self.model)
 
         self.theme_cls.theme_style = 'Dark'

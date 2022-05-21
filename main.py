@@ -55,7 +55,7 @@ def main(use_save, disable_console, disable_file, interface_type):
     car.subscribe(snapshot_service)
 
     if interface_type.lower() == 'gui':
-        run_gui_interface(car)
+        run_gui_interface(car, logger)
     else:
         run_cli_interface(car)
 
