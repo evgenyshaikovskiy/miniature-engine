@@ -1,5 +1,7 @@
 from kivy.properties import ObjectProperty
 
+from sys import exit
+
 from kivymd.color_definitions import colors
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.screen import Screen
@@ -21,7 +23,7 @@ class ViewComponent(MDScreen):
         self.stack_layout = MDStackLayout(orientation='lr-tb')
 
         self.car_label = MDLabel(
-            text='Placeholder',
+            text='',
             halign='center',
             theme_text_color='Primary'
         )
@@ -82,6 +84,9 @@ class ViewComponent(MDScreen):
 
         self.screen.add_widget(self.stack_layout)
 
+        # first update the label with startup car condition
+        self.update_label()
+
     def build(self):
         return self.screen
 
@@ -92,37 +97,31 @@ class ViewComponent(MDScreen):
         button_text = button.text
 
         popup_title = None
-        window_type = None
+        action = None
 
         match button_text:
             case 'Exit':
-                print('exit')
-                # actions on simulation exit => close application
-                pass
+                exit()
             case 'Refuel Car':
                 popup_title = 'Input amount of liters to refuel car.'
-                window_type = 'refuel-window'
+                action = 'refuel'
             case 'Accelerate by':
                 popup_title = 'Input amount of km/h to accelerate by.'
-                window_type = 'accelerate-window'
+                action = 'accelerate'
             case 'Brake by':
                 popup_title = 'Input amount of km/h to brake by.'
-                window_type = 'brake-window'
+                action = 'brake'
             case 'Free Wheel':
-                # just updates label
-                pass
+                action = 'free'
             case 'Run Idle':
-                # just updates label
-                print('run idle')
-                pass
+                action = 'idle'
             case 'Stop Engine':
-                # updates label
-                print('stop engine')
-                pass
+                action = 'stop'
             case 'Start Engine':
-                # updates label
-                print('start engine')
-                pass
+                action = 'start'
 
-        if window_type and popup_title:
-            self.controller.open_dialog(popup_title, window_type)
+        if action and popup_title:
+            self.controller.open_dialog(popup_title, action)
+        else:
+            self.controller.action_on_car(action)
+            self.update_label()

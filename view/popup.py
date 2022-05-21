@@ -44,7 +44,7 @@ class PopupWindow(MDDialog):
             ],
         )
 
-        self.window_type = kwargs['window_type']
+        self.action = kwargs['action']
         self.controller = kwargs['controller']
 
     def close(self, obj):

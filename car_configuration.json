@@ -1,5 +1,5 @@
 {
-    "fill_level": 19.8,
+    "fill_level": 16.88,
     "max_acceleration_ratio": 20,
     "tank_size": 60,
     "on_reserve_border": 5,
@@ -7,7 +7,7 @@
     "min_acceleration_ratio": 5,
     "max_speed": 250,
     "braking_speed": 10,
-    "actual_speed": 0,
-    "actual_consumption": 0,
+    "actual_speed": 1.0,
+    "actual_consumption": 0.06,
     "engine_is_running": true
 }
