@@ -1,4 +1,5 @@
 import click
+import console
 import os
 
 os.environ["KIVY_NO_ARGS"] = "1"
@@ -7,7 +8,6 @@ from models.car import Car
 from utility.logger import Logger
 from utility.restore import RestoreService
 from utility.snapshot import SnapshotService
-from console import run_cli_interface
 from gui import run_gui_interface
 
 
@@ -33,13 +33,12 @@ Logger.setup()
 )
 @click.option(
     '--interface-type',
-    default='GUI',
+    default='CLI',
     type=click.Choice(['GUI', 'CLI'], case_sensitive=False),
     help="Sets type of interface that application will use. Possible parameters are GUI and CLI."
 )
 def main(use_save, disable_console, disable_file, interface_type):
     # setup logger and services
-    print(interface_type)
     logger = Logger(disable_console, disable_file)
     snapshot_service: SnapshotService = SnapshotService()
     restore_service: RestoreService = RestoreService()
@@ -57,7 +56,7 @@ def main(use_save, disable_console, disable_file, interface_type):
     if interface_type.lower() == 'gui':
         run_gui_interface(car, logger)
     else:
-        run_cli_interface(car)
+        console.run_cli_interface(car)
 
 
 if __name__ == '__main__':

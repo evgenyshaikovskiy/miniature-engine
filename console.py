@@ -1,45 +1,74 @@
+import click
 from abstractions.vehicle import AbstractVehicle
+from click_shell import shell
 
 
-def run_cli_interface(car: AbstractVehicle):
+@shell(prompt='> ', intro='Launching CLI application...')
+def app():
+    pass
+
+
+def run_cli_interface(model: AbstractVehicle):
+    global car
+    car = model
+    app()
+
+
+@app.command(help='Starts car engine.', name='start-engine')
+def start_engine():
+    car.engine_start()
+
+
+@app.command(help='Stops car engine.', name='stop-engine')
+def stop_engine():
+    car.engine_stop()
+
+
+@app.command(help='Runs car in free wheel mode.', name='free-wheel')
+def free_wheel():
+    car.free_wheel()
+
+
+@app.command(help='Runs car in idle mode.', name='run-idle')
+def run_idle():
+    car.running_idle()
+
+
+@app.command(help='Prints available information on car.', name='info')
+def info():
+    car.get_report_on_car()
+
+
+@app.command(help='Refuels car by given amount of liters', name='refuel')
+@click.argument('liters')
+def refuel(liters):
     try:
-        while (True):
-            print('''Choose action:
-                  1 - Start Engine.
-                  2 - Stop Engine.
-                  3 - Run Idle.
-                  4 - Free Wheel.
-                  5 - Brake by certain speed.
-                  6 - Accelerate by certain speed.
-                  7 - Refuel Car.
-                  8 - Get information about car condition.
-                  9 - To exit simulation.
-                  ''')
-            action: int = int(input())
+        liters = float(liters)
+    except ValueError:
+        print('Error! Given amount of liters is not correct.')
+        return
 
-            if action == 1:
-                car.engine_start()
-            elif action == 2:
-                car.engine_stop()
-            elif action == 3:
-                car.running_idle()
-            elif action == 4:
-                car.free_wheel()
-            elif action == 5:
-                speed = float(input())
-                car.brake_by(speed)
-            elif action == 6:
-                print('Input count of km/h to accelerate by')
-                speed = float(input())
-                car.accelerate(speed)
-            elif action == 7:
-                print('Input amount of liters to refuel')
-                liters = float(input())
-                car.refuel(liters)
-            elif action == 8:
-                car.get_report_on_car()
-            elif action == 9:
-                print('Stopping simulation...')
-                break
-    except Exception:
-        print('Exception occurred.')
+    car.refuel(liters)
+
+
+@app.command(help='Accelerate car by given amount of km/h', name='accelerate')
+@click.argument('speed')
+def accelerate(speed):
+    try:
+        speed = int(speed)
+    except ValueError:
+        print('Error! Given speed accelerate to is not correct.')
+        return
+
+    car.accelerate(speed)
+
+@app.command(help='Brake car by given amount of km/h', name='brake')
+@click.argument('speed')
+def brake(speed):
+    try:
+        speed = int(speed)
+    except ValueError:
+        print('Error! Given speed to brake by is not correct.')
+        return
+
+    car.brake_by(speed)
