@@ -4,7 +4,27 @@ from click_shell import shell
 
 
 @shell(prompt='> ', intro='Launching CLI application...')
-def app():
+@click.option(
+    '--use-save',
+    default=False,
+    help="Set this parameter as 'True' to upload previous session, otherwise 'False'."
+)
+@click.option(
+    '--disable-console',
+    default=False,
+    help="Set parameter as 'True' to disable console logging, otherwise 'False'."
+)
+@click.option(
+    '--disable-file',
+    default=False,
+    help="Set this parameter as 'True' to disable file logging, otherwise 'False'."
+)
+@click.option(
+    '--interface-type',
+    default='CLI',
+    help="Sets type of interface that application will use. Possible parameters are GUI and CLI."
+)
+def app(use_save, disable_console, disable_file, interface_type):
     pass
 
 
@@ -61,6 +81,7 @@ def accelerate(speed):
         return
 
     car.accelerate(speed)
+
 
 @app.command(help='Brake car by given amount of km/h', name='brake')
 @click.argument('speed')

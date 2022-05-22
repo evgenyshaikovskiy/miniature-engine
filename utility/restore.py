@@ -2,7 +2,6 @@ from abstractions.logger import AbstractLogger
 from models.car import Car
 
 import json
-import string
 from os.path import exists
 
 

@@ -16,7 +16,6 @@ class CarGraphicApplication(MDApp):
         super().__init__(**kw)
         self.model = ModelComponent(car, logger)
         self.controller = ControllerComponent(self.model)
-
         self.theme_cls.theme_style = 'Dark'
 
     def build(self):

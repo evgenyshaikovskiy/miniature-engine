@@ -1,6 +1,7 @@
 import click
 import console
 import os
+from sys import exit
 
 os.environ["KIVY_NO_ARGS"] = "1"
 
@@ -34,7 +35,6 @@ Logger.setup()
 @click.option(
     '--interface-type',
     default='CLI',
-    type=click.Choice(['GUI', 'CLI'], case_sensitive=False),
     help="Sets type of interface that application will use. Possible parameters are GUI and CLI."
 )
 def main(use_save, disable_console, disable_file, interface_type):
@@ -55,8 +55,11 @@ def main(use_save, disable_console, disable_file, interface_type):
 
     if interface_type.lower() == 'gui':
         run_gui_interface(car, logger)
-    else:
+    elif interface_type.lower() == 'cli':
         console.run_cli_interface(car)
+    else:
+        print('Unavailable format.')
+        exit()
 
 
 if __name__ == '__main__':
